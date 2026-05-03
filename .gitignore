@@ -1,0 +1,288 @@
+# Git Ignore - Amazon Connect Mobile Integration Project
+
+## Environment Variables & Secrets
+.env
+.env.local
+.env.*.local
+.env.prod
+.env.staging
+.env.development
+.DS_Store
+
+# IDE & Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.sublime-project
+.sublime-workspace
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+*.iml
+
+# OS Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Build & Dependencies
+build/
+dist/
+bin/
+.gradle/
+*.class
+*.jar
+*.war
+target/
+node_modules/
+Pods/
+Carthage/Build/
+.swiftpm/
+
+## iOS Specific
+DerivedData/
+*.pbxuser
+*.perspectivev3
+*.xcworkspace/xcuserdata/
+xcuserdata/
+*.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+Podfile.lock
+.xcode-build-settings.xcconfig
+
+## Android Specific
+.gradle
+local.properties
+*.apk
+*.aab
+*.jks
+*.keystore
+google-services.json
+keystore/
+app/release/
+.idea/caches/
+
+## Credentials & Keys
+*.pem
+*.key
+*.crt
+*.pub
+*.pfx
+*.p12
+aws-credentials
+~/.aws/
+
+## Python Venv
+venv/
+ENV/
+env/
+.Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+
+## Node.js
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+node_modules/
+
+## Temporary Files
+*.tmp
+*.temp
+*.bak
+*.backup
+*.orig
+*.swp
+*.swo
+
+## Test Coverage
+coverage/
+*.coverage
+.coverage
+htmlcov/
+.nyc_output/
+
+## Logs
+logs/
+*.log
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+lerna-debug.log
+
+## Databases
+*.db
+*.sqlite
+*.sqlite3
+*.realm
+
+## Lock Files (optional - comment out if you want to track these)
+# Podfile.lock
+# yarn.lock
+# package-lock.json (optional)
+
+## AWS Files
+*.json.backup
+aws-exports.js
+awsconfiguration.json
+
+## macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.DocumentRevisions-V100
+.fseventsd
+.TemporaryItems
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.Spotlight-V100
+.Trashes
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+## Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.Trash-*
+
+## Linux
+*~
+.directory
+.Trash-*
+.nfs*
+
+## Firebase
+google-services.json
+GoogleService-Info.plist
+
+## Temporary Build Output
+*.o
+*.a
+*.so
+*.dylib
+*.dll
+*.exe
+*.out
+
+## Editor-specific Files
+.editorconfig
+.prettierignore
+.prettierrc
+.eslintignore
+.eslintcache
+
+## Package managers
+package-lock.json (optional)
+yarn.lock (optional)
+Gemfile.lock
+
+## Documentation Build
+docs/_build/
+site/
+
+## Virtual Environments
+.venv/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+## IDE Caches
+.cache/
+.pytest_cache/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+## Compiled Python
+*.pyc
+*.pyo
+*.pyd
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+
+## PEP 582
+__pypackages__/
+
+## Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+## Project-specific
+.project-settings
+.local-config
+*.bak
+backup/
+.backup
+old/
+.old
+archive/
+
+## CI/CD
+.circleci/
+.github/workflows/*.log
+.gitlab-ci.yml.bak
+
+## Testing Results
+test-results/
+test-output/
+junit-results.xml
+coverage-report.html
+
+## Application Specific
+dist-ssr/
+out/
+.vuepress/dist/
+.nuxt/
+.cache/
+.vuepress/dist/
+.serverless/
+.fusebox/
+.dynamodb/
+.tern-port
+.env.local.php
+*.code-workspace
+
+# Misc
+.eslintcache
+.stylelintcache
+*.tar.gz
+*.rar
+.eslint-plugin-prettier.log

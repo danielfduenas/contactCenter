@@ -1,0 +1,418 @@
+{
+  "project": {
+    "name": "Amazon Connect Mobile Integration",
+    "description": "Mobile application integrating iOS and Android clients with AWS Amazon Connect for real-time voice communication",
+    "version": "1.0.0",
+    "status": "Planning Phase Complete",
+    "lastUpdated": "2026-05-02",
+    "difficulty": "Advanced"
+  },
+  
+  "architecture": {
+    "pattern": {
+      "ios": "Clean Architecture",
+      "android": "MVVM + Repository Pattern"
+    },
+    "layers": {
+      "ios": [
+        "Presentation (Views + ViewModels)",
+        "Domain (UseCases + Entities)",
+        "Data (Repositories + Network)"
+      ],
+      "android": [
+        "UI Layer (Screens + Navigation)",
+        "ViewModel Layer (State Management)",
+        "Domain Layer (UseCases + Entities)",
+        "Data Layer (Repositories + DataSources)"
+      ]
+    }
+  },
+  
+  "technology_stack": {
+    "ios": {
+      "language": "Swift 5.7+",
+      "ui_framework": "SwiftUI",
+      "min_version": "iOS 14+",
+      "ide": "Xcode 14+",
+      "key_dependencies": [
+        "AWS SDK for iOS (AWSConnect, AWSConnectParticipant)",
+        "Combine Framework",
+        "AVFoundation",
+        "KeychainAccess"
+      ]
+    },
+    "android": {
+      "language": "Kotlin 1.8+",
+      "ui_framework": "Jetpack Compose",
+      "min_version": "Android 7.0 (API 24)",
+      "ide": "Android Studio Flamingo+",
+      "build_tool": "Gradle 8.0+",
+      "key_dependencies": [
+        "Amazon Connect SDK",
+        "Firebase Cloud Messaging (FCM)",
+        "Jetpack Compose",
+        "Room Database",
+        "EncryptedSharedPreferences"
+      ]
+    },
+    "aws": {
+      "services": [
+        "Amazon Connect",
+        "AWS Lambda",
+        "IAM",
+        "CloudWatch",
+        "S3",
+        "KMS (optional)"
+      ]
+    }
+  },
+  
+  "system_flow": {
+    "primary_flow": [
+      "User (iOS) taps 'Call Support'",
+      "iOS app signs request with SigV4",
+      "AWS API: StartOutboundVoiceContact()",
+      "Amazon Connect validates and routes",
+      "Contact added to queue",
+      "Android agent receives FCM notification",
+      "Agent accepts call via CCP",
+      "WebRTC bridge established",
+      "Audio stream: iOS ↔ Android",
+      "Call active with controls (Mute, Hold, End)",
+      "Agent or user ends call",
+      "Contact disconnected"
+    ],
+    "components": {
+      "ios_app": {
+        "responsibilities": [
+          "User interface for call initiation",
+          "Microphone permission handling",
+          "AWS SDK integration (SigV4 signing)",
+          "Call state management",
+          "Error handling and retry logic"
+        ]
+      },
+      "android_app": {
+        "responsibilities": [
+          "Agent authentication",
+          "FCM notification handling",
+          "CCP WebView integration",
+          "Call control management",
+          "Real-time status updates"
+        ]
+      },
+      "aws_infrastructure": {
+        "responsibilities": [
+          "Contact routing and queuing",
+          "User authentication and authorization",
+          "Call state tracking",
+          "WebRTC bridge provisioning",
+          "Logging and analytics"
+        ]
+      }
+    }
+  },
+  
+  "project_phases": {
+    "phase_1": {
+      "name": "AWS Infrastructure Setup",
+      "duration": "3-4 days",
+      "tasks": [
+        "Create Amazon Connect instance",
+        "Configure Contact Flow",
+        "Set up Queues",
+        "Create Routing Profiles",
+        "Configure IAM roles and policies",
+        "Register agent users",
+        "Validate setup"
+      ],
+      "deliverables": [
+        "Active Connect instance",
+        "Published Contact Flow",
+        "Configured Queue and Routing Profile",
+        "IAM roles with proper permissions",
+        "Setup documentation"
+      ]
+    },
+    "phase_2": {
+      "name": "iOS App Development",
+      "duration": "3-4 days",
+      "tasks": [
+        "Project setup (Xcode + dependencies)",
+        "Domain layer implementation",
+        "Presentation layer (Views + ViewModels)",
+        "Data layer (Network + Repositories)",
+        "Permission handling",
+        "Error handling",
+        "Unit tests"
+      ],
+      "deliverables": [
+        "Xcode project with clean architecture",
+        "Working call button with state management",
+        "AWS SDK integration",
+        "Unit test suite"
+      ]
+    },
+    "phase_3": {
+      "name": "Android App Development",
+      "duration": "3-4 days",
+      "tasks": [
+        "Project setup (Android Studio + Gradle)",
+        "Domain layer implementation",
+        "ViewModel layer with state management",
+        "UI layer (Compose screens)",
+        "Data layer (Repositories + DataSources)",
+        "Firebase FCM integration",
+        "CCP WebView integration",
+        "Unit tests"
+      ],
+      "deliverables": [
+        "Android Studio project with MVVM architecture",
+        "Login screen",
+        "Agent dashboard with call controls",
+        "Firebase messaging integration",
+        "Unit test suite"
+      ]
+    },
+    "phase_4": {
+      "name": "Error Handling & Permissions",
+      "duration": "2 days",
+      "tasks": [
+        "Network error handling (both platforms)",
+        "Authentication error recovery",
+        "Permission denial flows",
+        "Timeout and retry logic",
+        "Graceful disconnection handling",
+        "Logging implementation"
+      ],
+      "deliverables": [
+        "Comprehensive error handling",
+        "Proper permission flows",
+        "Retry logic with exponential backoff"
+      ]
+    },
+    "phase_5": {
+      "name": "Testing & Validation",
+      "duration": "2-3 days",
+      "tasks": [
+        "Unit tests execution",
+        "Integration tests",
+        "End-to-end call flow testing",
+        "Performance testing",
+        "Security validation",
+        "Manual testing"
+      ],
+      "deliverables": [
+        "Test coverage report (70%+)",
+        "E2E test results",
+        "Performance metrics",
+        "Security checklist"
+      ]
+    },
+    "phase_6": {
+      "name": "Documentation",
+      "duration": "1-2 days",
+      "tasks": [
+        "Architecture documentation",
+        "AWS setup guide",
+        "iOS development guide",
+        "Android development guide",
+        "API references",
+        "Troubleshooting guide",
+        "README files"
+      ],
+      "deliverables": [
+        "Complete project documentation",
+        "Setup guides for developers",
+        "API documentation"
+      ]
+    },
+    "phase_7": {
+      "name": "Bonus Features",
+      "duration": "2 days (Optional)",
+      "tasks": [
+        "Push notifications implementation",
+        "Customer profile display",
+        "Extended unit tests",
+        "Performance optimizations"
+      ],
+      "deliverables": [
+        "Push notification system",
+        "Customer profile integration",
+        "Extended test coverage"
+      ]
+    }
+  },
+  
+  "critical_identifiers": {
+    "description": "These values must be obtained from AWS setup and used throughout the application",
+    "identifiers": [
+      {
+        "name": "Instance ID",
+        "format": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+        "used_in": ["iOS app", "Android app", "API calls"],
+        "required": true
+      },
+      {
+        "name": "Contact Flow ID",
+        "format": "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy",
+        "used_in": ["iOS app StartOutboundVoiceContact"],
+        "required": true
+      },
+      {
+        "name": "Queue ID",
+        "format": "zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz",
+        "used_in": ["AWS routing", "Agent dashboard"],
+        "required": true
+      },
+      {
+        "name": "Routing Profile ID",
+        "format": "rrrrrrrr-rrrr-rrrr-rrrr-rrrrrrrrrrrr",
+        "used_in": ["Android app agent assignment"],
+        "required": true
+      },
+      {
+        "name": "AWS Access Key",
+        "format": "AKIA...",
+        "used_in": ["SigV4 signing (iOS)", "Firebase config (Android)"],
+        "required": true,
+        "security": "CRITICAL"
+      },
+      {
+        "name": "AWS Secret Key",
+        "format": "...",
+        "used_in": ["SigV4 signing (iOS)", "Firebase config (Android)"],
+        "required": true,
+        "security": "CRITICAL"
+      }
+    ]
+  },
+  
+  "success_criteria": {
+    "functionality": [
+      "Call flows correctly from iOS → AWS Connect → Android",
+      "Agent receives notification and can accept/reject",
+      "Audio stream established between devices",
+      "All call controls functional (Mute, Hold, End)"
+    ],
+    "code_quality": [
+      "Clean Architecture (iOS) properly implemented",
+      "MVVM pattern (Android) properly implemented",
+      "No magic strings or hardcoded values",
+      "Comprehensive error handling",
+      "Proper logging for debugging",
+      "70%+ code coverage"
+    ],
+    "security": [
+      "Credentials never stored in plaintext",
+      "AWS credentials signed properly (SigV4)",
+      "HTTPS for all communications",
+      "User data encrypted at rest",
+      "Sensitive data in Keychain/EncryptedSharedPrefs"
+    ],
+    "documentation": [
+      "Clear setup instructions",
+      "Code comments on complex logic",
+      "Architecture documentation",
+      "Troubleshooting guide",
+      "API references"
+    ],
+    "testing": [
+      "Unit tests pass",
+      "Integration tests pass",
+      "E2E flow works end-to-end",
+      "Manual testing completed",
+      "Performance targets met"
+    ]
+  },
+  
+  "performance_targets": {
+    "call_initiation_time": {
+      "value": 3,
+      "unit": "seconds",
+      "description": "From iOS tap to notification sent"
+    },
+    "agent_response_time": {
+      "value": 2,
+      "unit": "seconds",
+      "description": "From tap to WebRTC start"
+    },
+    "audio_latency": {
+      "value": 500,
+      "unit": "milliseconds",
+      "description": "End-to-end delay"
+    },
+    "battery_impact": {
+      "value": 5,
+      "unit": "% per hour",
+      "description": "On active call"
+    },
+    "memory_usage": {
+      "value": 150,
+      "unit": "MB",
+      "description": "App in foreground"
+    },
+    "notification_delay": {
+      "value": 5,
+      "unit": "seconds",
+      "description": "FCM delivery"
+    }
+  },
+  
+  "file_structure": {
+    "root": {
+      "README.md": "Project overview and quick start",
+      "ARCHITECTURE.md": "Detailed system architecture",
+      "IMPLEMENTATION_PLAN.md": "Step-by-step implementation guide",
+      "QUICK_REFERENCE.md": "Quick reference for developers",
+      ".env.example": "Environment variables template",
+      ".gitignore": "Git ignore configuration"
+    },
+    "aws": {
+      "Documentation/SETUP.md": "AWS setup instructions",
+      "Documentation/CONFIGURATION_CHECKLIST.md": "Configuration validation",
+      "CloudFormation/connect-setup.yaml": "Infrastructure as Code",
+      "Lambda/presigner-function.py": "Token generation"
+    },
+    "ios": {
+      "README.md": "iOS-specific documentation",
+      "AmazonConnectClient/": "Xcode project"
+    },
+    "android": {
+      "README.md": "Android-specific documentation",
+      "app/": "Android Studio project"
+    }
+  },
+  
+  "timeline": {
+    "total_duration_days": 19,
+    "total_duration_weeks": 3.8,
+    "phases": [
+      { "phase": 1, "days": 3, "name": "AWS Setup" },
+      { "phase": 2, "days": 3, "name": "iOS Development" },
+      { "phase": 3, "days": 3, "name": "Android Development" },
+      { "phase": 4, "days": 2, "name": "Error Handling" },
+      { "phase": 5, "days": 2, "name": "Testing" },
+      { "phase": 6, "days": 1, "name": "Documentation" },
+      { "phase": 7, "days": 2, "name": "Bonus (Optional)" }
+    ]
+  },
+  
+  "resources": {
+    "documentation": {
+      "aws": "https://docs.aws.amazon.com/connect/",
+      "aws_sdk_ios": "https://github.com/aws-amplify/aws-sdk-ios",
+      "aws_sdk_android": "https://github.com/aws-amplify/aws-sdk-android"
+    },
+    "ios": {
+      "swiftui": "https://developer.apple.com/xcode/swiftui/",
+      "combine": "https://developer.apple.com/documentation/combine",
+      "avaudiosession": "https://developer.apple.com/documentation/avfoundation/avaudiosession"
+    },
+    "android": {
+      "compose": "https://developer.android.com/jetpack/compose",
+      "firebase_messaging": "https://firebase.google.com/docs/cloud-messaging",
+      "viewmodel": "https://developer.android.com/topic/libraries/architecture/viewmodel"
+    }
+  }
+}
