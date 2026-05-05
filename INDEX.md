@@ -27,6 +27,13 @@ Para una introducción rápida, lee en este orden:
 - **[QUICK_REFERENCE.md](QUICK_REFERENCE.md)** - Cheat sheet para developers
 - **[PHASE_1_SUMMARY.md](PHASE_1_SUMMARY.md)** - Resumen de lo completado en Fase 1
 
+### 📱 Documentación de Fases Completadas
+- **[iOS/PHASE_2_README.md](iOS/PHASE_2_README.md)** - Setup guide para iOS app
+- **[iOS/PHASE_2_COMPLETE.md](iOS/PHASE_2_COMPLETE.md)** - Completion report iOS (✅ Completo)
+- **[Android/PHASE_3_README.md](Android/PHASE_3_README.md)** - Setup guide para Android app
+- **[Android/PHASE_3_COMPLETE.md](Android/PHASE_3_COMPLETE.md)** - Completion report Android (✅ Completo)
+- **[Android/PHASE_3_IMPLEMENTATION_SUMMARY.md](Android/PHASE_3_IMPLEMENTATION_SUMMARY.md)** - Resumen técnico detallado
+
 ### ☁️ Documentación AWS
 - **[AWS/Documentation/SETUP.md](AWS/Documentation/SETUP.md)** - Guía completa de AWS setup (8 fases)
 - **[AWS/Documentation/CONFIGURATION_CHECKLIST.md](AWS/Documentation/CONFIGURATION_CHECKLIST.md)** - Validación y checklists

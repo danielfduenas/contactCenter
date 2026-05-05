@@ -1,0 +1,42 @@
+platform :ios, '14.0'
+
+target 'ConnectMobileUser' do
+  # Core iOS dependencies
+  pod 'Combine'
+  
+  # AWS SDK
+  pod 'AWSCore'
+  pod 'AWSConnect'
+  pod 'AWSConnectParticipant'
+  pod 'AWSCognitoIdentityProvider'
+  
+  # Networking
+  pod 'Alamofire', '~> 5.7'
+  
+  # JSON parsing
+  pod 'SwiftyJSON', '~> 5.0'
+  
+  # Secure storage
+  pod 'KeychainSwift', '~> 20.0'
+  
+  # Logging
+  pod 'CocoaLumberjack/Swift', '~> 3.7'
+  
+  target 'ConnectMobileUserTests' do
+    inherit! :search_paths
+    pod 'Quick'
+    pod 'Nimble'
+  end
+end
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    flutter_additional_ios_build_settings(target)
+    target.build_configurations.each do |config|
+      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= [
+        '$(inherited)',
+        'COCOAPODS=1'
+      ]
+    end
+  end
+end

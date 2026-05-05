@@ -1,0 +1,11 @@
+*.swiftpm
+.DS_Store
+xcuserdata/
+DerivedData/
+build/
+.xcodeproj/xcuserdata/
+.xcworkspace/xcuserdata/
+Pods/
+.env
+.env.local
+*.log
