@@ -1,0 +1,16 @@
+#!/bin/bash
+set -e
+
+# Use the installed Gradle in /home/danie/.gradle/gradle-8.4
+GRADLE_HOME="/home/danie/.gradle/gradle-8.4"
+
+# Execute Gradle with a clean environment to avoid conflicts
+# Pass through PATH and other essential variables
+exec env -i \
+  PATH="$PATH" \
+  HOME="$HOME" \
+  USER="$USER" \
+  JAVA_HOME="" \
+  GRADLE_HOME="$GRADLE_HOME" \
+  GRADLE_USER_HOME="${GRADLE_USER_HOME:-$HOME/.gradle}" \
+  "$GRADLE_HOME/bin/gradle" "$@"
