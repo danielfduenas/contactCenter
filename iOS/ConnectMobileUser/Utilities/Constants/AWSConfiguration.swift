@@ -8,7 +8,7 @@ struct AWSConfiguration {
     let accessKeyId: String = ProcessInfo.processInfo.environment["AWS_ACCESS_KEY_ID"] ?? ""
     let secretAccessKey: String = ProcessInfo.processInfo.environment["AWS_SECRET_ACCESS_KEY"] ?? ""
     let sessionToken: String = ProcessInfo.processInfo.environment["AWS_SESSION_TOKEN"] ?? ""
-    let region: String = ProcessInfo.processInfo.environment["AWS_REGION"] ?? "us-east-1"
+    let region: String = ProcessInfo.processInfo.environment["AWS_REGION"] ?? "us-west-2"
     
     // Amazon Connect configuration
     let instanceId: String = ProcessInfo.processInfo.environment["CONNECT_INSTANCE_ID"] ?? ""
