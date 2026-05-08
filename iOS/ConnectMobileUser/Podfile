@@ -2,12 +2,35 @@ project 'ConnectMobileUser.xcodeproj'
 platform :ios, '14.0'
 
 target 'ConnectMobileUser' do
+  use_frameworks! :linkage => :static
   pod 'AWSCore'
   pod 'AWSConnect'
   pod 'AWSConnectParticipant'
-  pod 'AWSCognitoIdentityProvider'
   pod 'Alamofire', '~> 5.7'
   pod 'SwiftyJSON', '~> 5.0'
   pod 'KeychainSwift', '~> 20.0'
-  pod 'CocoaLumberjack/Swift', '~> 3.7'
+end
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      # Forzamos el SDK real
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '14.0'
+      # Permitir includes no modulares para evitar conflictos de AWSDDLog
+      config.build_settings['CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES'] = 'YES'
+      # Fijar el modo de verificación de módulos
+      config.build_settings['VALIDATE_WORKSPACE'] = 'YES'
+      # Configuración para evitar redefiniciones
+      config.build_settings['MODULEMAP_PRIVATE_MODULE_MAP'] = 'YES' if config.build_settings['MODULEMAP_PRIVATE_MODULE_MAP'].nil?
+    end
+  end
+  
+  # Solucionar el problema específico de AWSDDLog en AWSCore
+  aws_core_target = installer.pods_project.targets.find { |t| t.name == 'AWSCore' }
+  if aws_core_target
+    aws_core_target.build_configurations.each do |config|
+      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= '$(inherited)'
+      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] += ' DD_LOGGING_DISABLED=1'
+    end
+  end
 end

@@ -163,19 +163,28 @@ class CallViewModel: ObservableObject {
     }
     
     private func startDurationTimer() {
+        stopDurationTimer()
         callDuration = 0
+        
+        // El closure del Timer es 'Sendable' en Swift 6
         durationTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-            self?.callDuration += 1
+            // Usamos Task para saltar explícitamente al MainActor de forma segura
+            Task { @MainActor [weak self] in
+                guard let self = self else { return }
+                self.callDuration += 1
+            }
         }
     }
-    
+
     private func stopDurationTimer() {
         durationTimer?.invalidate()
         durationTimer = nil
     }
-    
+
     deinit {
-        stopDurationTimer()
+        // Aquí invalidamos directamente el timer sin llamar al método aislado
+        durationTimer?.invalidate()
+        // Para el task, no necesitas llamar a un método del actor
         statusTask?.cancel()
     }
 }

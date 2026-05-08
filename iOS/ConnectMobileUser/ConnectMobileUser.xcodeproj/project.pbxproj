@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		41120C999A8D25FAF03AB955 /* Pods_ConnectMobileUser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1D963EDECDC4B0CAEF02409 /* Pods_ConnectMobileUser.framework */; };
 		6FB3E9402FADE105004FAE22 /* InfoPlist.md in Resources */ = {isa = PBXBuildFile; fileRef = 6FB3E9382FADE105004FAE22 /* InfoPlist.md */; };
 		6FB3E9412FADE105004FAE22 /* EndCallUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB3E92B2FADE105004FAE22 /* EndCallUseCase.swift */; };
 		6FB3E9422FADE105004FAE22 /* InitiateCallUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB3E92C2FADE105004FAE22 /* InitiateCallUseCase.swift */; };
@@ -29,9 +30,6 @@
 		6FB3E9532FADE105004FAE22 /* CallButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB3E9322FADE105004FAE22 /* CallButtonView.swift */; };
 		6FB3E9542FADE105004FAE22 /* CallError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB3E9252FADE105004FAE22 /* CallError.swift */; };
 		6FB3E9552FADE105004FAE22 /* CallState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB3E9262FADE105004FAE22 /* CallState.swift */; };
-		6FB3E9572FADE5D0004FAE22 /* AWSConnect.bundle in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 6FB3E9562FADE5D0004FAE22 /* AWSConnect.bundle */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		6FB3E95A2FADE5D9004FAE22 /* AWSConnect.bundle in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 6FB3E9592FADE5D9004FAE22 /* AWSConnect.bundle */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		EC08EE227E45A0383198D120 /* libPods-ConnectMobileUser.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 56C4952C5BD2D33CD25EF727 /* libPods-ConnectMobileUser.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -41,8 +39,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				6FB3E95A2FADE5D9004FAE22 /* AWSConnect.bundle in Embed PlugIns */,
-				6FB3E9572FADE5D0004FAE22 /* AWSConnect.bundle in Embed PlugIns */,
 			);
 			name = "Embed PlugIns";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -50,8 +46,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		352D1871E75987159FBFD3B8 /* Pods-ConnectMobileUser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ConnectMobileUser.release.xcconfig"; path = "Target Support Files/Pods-ConnectMobileUser/Pods-ConnectMobileUser.release.xcconfig"; sourceTree = "<group>"; };
-		56C4952C5BD2D33CD25EF727 /* libPods-ConnectMobileUser.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ConnectMobileUser.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4327FE7FDD9648C13C576B03 /* Pods-ConnectMobileUser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ConnectMobileUser.release.xcconfig"; path = "Target Support Files/Pods-ConnectMobileUser/Pods-ConnectMobileUser.release.xcconfig"; sourceTree = "<group>"; };
+		6C0A6D49895FD9A9002EB0FF /* Pods-ConnectMobileUser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ConnectMobileUser.debug.xcconfig"; path = "Target Support Files/Pods-ConnectMobileUser/Pods-ConnectMobileUser.debug.xcconfig"; sourceTree = "<group>"; };
 		6F8960492FADDFFD00C0984E /* ConnectMobileUser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ConnectMobileUser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6FB3E91B2FADE105004FAE22 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6FB3E91C2FADE105004FAE22 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -75,9 +71,7 @@
 		6FB3E93A2FADE105004FAE22 /* AWSConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AWSConfiguration.swift; sourceTree = "<group>"; };
 		6FB3E93C2FADE105004FAE22 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		6FB3E93D2FADE105004FAE22 /* NetworkReachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkReachability.swift; sourceTree = "<group>"; };
-		6FB3E9562FADE5D0004FAE22 /* AWSConnect.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = AWSConnect.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
-		6FB3E9592FADE5D9004FAE22 /* AWSConnect.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = AWSConnect.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
-		A2FE49F20FB7D9E4B5A33E07 /* Pods-ConnectMobileUser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ConnectMobileUser.debug.xcconfig"; path = "Target Support Files/Pods-ConnectMobileUser/Pods-ConnectMobileUser.debug.xcconfig"; sourceTree = "<group>"; };
+		F1D963EDECDC4B0CAEF02409 /* Pods_ConnectMobileUser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ConnectMobileUser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,30 +79,19 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EC08EE227E45A0383198D120 /* libPods-ConnectMobileUser.a in Frameworks */,
+				41120C999A8D25FAF03AB955 /* Pods_ConnectMobileUser.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		28C297A603B65D72C2205BAE /* Frameworks */ = {
+		4EDC8C38A4FF763F5613CC13 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				6FB3E9592FADE5D9004FAE22 /* AWSConnect.bundle */,
-				6FB3E9562FADE5D0004FAE22 /* AWSConnect.bundle */,
-				56C4952C5BD2D33CD25EF727 /* libPods-ConnectMobileUser.a */,
+				F1D963EDECDC4B0CAEF02409 /* Pods_ConnectMobileUser.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		56F9F480A75EF459EFE47D48 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				A2FE49F20FB7D9E4B5A33E07 /* Pods-ConnectMobileUser.debug.xcconfig */,
-				352D1871E75987159FBFD3B8 /* Pods-ConnectMobileUser.release.xcconfig */,
-			);
-			path = Pods;
 			sourceTree = "<group>";
 		};
 		6F8960402FADDFFD00C0984E = {
@@ -121,8 +104,8 @@
 				6FB3E9392FADE105004FAE22 /* Resources */,
 				6FB3E93F2FADE105004FAE22 /* Utilities */,
 				6F89604A2FADDFFD00C0984E /* Products */,
-				56F9F480A75EF459EFE47D48 /* Pods */,
-				28C297A603B65D72C2205BAE /* Frameworks */,
+				EE8F119315BAF8E9B6682AF3 /* Pods */,
+				4EDC8C38A4FF763F5613CC13 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -270,6 +253,15 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
+		EE8F119315BAF8E9B6682AF3 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6C0A6D49895FD9A9002EB0FF /* Pods-ConnectMobileUser.debug.xcconfig */,
+				4327FE7FDD9648C13C576B03 /* Pods-ConnectMobileUser.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -277,12 +269,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6F8960542FADE00000C0984E /* Build configuration list for PBXNativeTarget "ConnectMobileUser" */;
 			buildPhases = (
-				ECBC1BAF27065A1C352561AA /* [CP] Check Pods Manifest.lock */,
+				8A2943FD8E73FFD5588A481A /* [CP] Check Pods Manifest.lock */,
 				6F8960452FADDFFD00C0984E /* Sources */,
 				6F8960462FADDFFD00C0984E /* Frameworks */,
 				6F8960472FADDFFD00C0984E /* Resources */,
-				2AD92E9B952B3CAF3F774B0B /* [CP] Copy Pods Resources */,
 				6FB3E9582FADE5D0004FAE22 /* Embed PlugIns */,
+				A47E6CAD2CA62D65486CB521 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -339,24 +331,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		2AD92E9B952B3CAF3F774B0B /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ConnectMobileUser/Pods-ConnectMobileUser-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ConnectMobileUser/Pods-ConnectMobileUser-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ConnectMobileUser/Pods-ConnectMobileUser-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		ECBC1BAF27065A1C352561AA /* [CP] Check Pods Manifest.lock */ = {
+		8A2943FD8E73FFD5588A481A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -376,6 +351,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A47E6CAD2CA62D65486CB521 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ConnectMobileUser/Pods-ConnectMobileUser-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ConnectMobileUser/Pods-ConnectMobileUser-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ConnectMobileUser/Pods-ConnectMobileUser-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -451,6 +447,10 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)/**",
+					"$(SRCROOT)/Pods/**",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -465,6 +465,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)/**",
+					"$(SRCROOT)/Pods/**",
+				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -513,6 +517,10 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)/**",
+					"$(SRCROOT)/Pods/**",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -521,6 +529,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)/**",
+					"$(SRCROOT)/Pods/**",
+				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -530,20 +542,23 @@
 		};
 		6F8960552FADE00000C0984E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A2FE49F20FB7D9E4B5A33E07 /* Pods-ConnectMobileUser.debug.xcconfig */;
+			baseConfigurationReference = 6C0A6D49895FD9A9002EB0FF /* Pods-ConnectMobileUser.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = A6QBVUUH33;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				EXCLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = "";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -557,6 +572,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 26.4;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = contactCenter.ConnectMobileUser;
@@ -568,6 +584,7 @@
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_ENABLE_EXPLICIT_MODULES = NO;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
@@ -577,20 +594,23 @@
 		};
 		6F8960562FADE00000C0984E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 352D1871E75987159FBFD3B8 /* Pods-ConnectMobileUser.release.xcconfig */;
+			baseConfigurationReference = 4327FE7FDD9648C13C576B03 /* Pods-ConnectMobileUser.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = A6QBVUUH33;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				EXCLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = "";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -604,6 +624,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 26.4;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = contactCenter.ConnectMobileUser;
@@ -615,6 +636,7 @@
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_ENABLE_EXPLICIT_MODULES = NO;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";

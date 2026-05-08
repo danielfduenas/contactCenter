@@ -1,5 +1,6 @@
 import Foundation
 import AVFoundation
+import UIKit
 
 /// Implementation of PermissionRepository
 class PermissionRepositoryImpl: PermissionRepository {
@@ -9,7 +10,7 @@ class PermissionRepositoryImpl: PermissionRepository {
     
     func requestMicrophonePermission() async throws -> Bool {
         return await withCheckedContinuation { continuation in
-            AVAudioApplication.requestRecordPermission { granted in
+            AVAudioSession.sharedInstance().requestRecordPermission { granted in
                 if granted {
                     self.logger.info("Microphone permission granted")
                 } else {
@@ -21,9 +22,12 @@ class PermissionRepositoryImpl: PermissionRepository {
     }
     
     func isMicrophonePermissionGranted() -> Bool {
-        let status = AVAudioApplication.recordingGranted
-        logger.info("Microphone permission status: \(status ? "granted" : "denied")")
-        return status
+        let status = AVAudioSession.sharedInstance().recordPermission
+        let isGranted = (status == .granted)
+        
+        logger.info("Microphone permission status: \(isGranted ? "granted" : "denied/undetermined")")
+        
+        return isGranted
     }
     
     func openAppSettings() throws {

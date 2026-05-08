@@ -308,13 +308,21 @@ class CallViewModelTests: XCTestCase {
 - Error message masking (no AWS internals exposed)
 - Network validation before API calls
 - Logger for debugging
+- **IAM User credentials** (no Cognito required)
+
+### 🔄 Current Authentication Setup
+- ✅ AWS IAM User with direct credentials (Access Key ID + Secret Access Key)
+- ✅ Credentials loaded from environment variables or config files
+- ✅ `AWSBasicSessionCredentialsProvider` for credential initialization
+- ✅ No Cognito dependency (removed from Podfile)
 
 ### 🔄 Recommended for Production
-- Keychain storage for credentials
-- AWS Cognito integration
+- Keychain storage for credentials (KeychainSwift available)
+- Temporary session credentials instead of permanent IAM keys
+- AWS Secrets Manager for credential rotation
 - Certificate pinning
-- Encrypted credential storage
 - Rate limiting on API calls
+- CloudTrail monitoring for API calls
 
 ---
 
@@ -352,7 +360,18 @@ class CallViewModelTests: XCTestCase {
 - Instance ID
 - Queue ID
 - Contact Flow ID
-- AWS Credentials (Access Key, Secret, Region)
+
+### AWS IAM Authentication
+- **IAM User** (not Cognito) with permissions for:
+  - `connect:StartOutboundVoiceContact`
+  - `connect:GetContactAttributes`
+  - `connect:UpdateContactAttributes`
+  - `connect:DescribeContact`
+- Access Key ID
+- Secret Access Key
+- Region
+
+**See [IAM_CONFIGURATION.md](IAM_CONFIGURATION.md) for detailed setup instructions**
 
 ### Future Phases
 - **Phase 3**: Android Agent App (receives FCM notifications)
@@ -367,26 +386,29 @@ class CallViewModelTests: XCTestCase {
 1. **QUICK_START.md** - 5-minute setup guide
 2. **PHASE_2_README.md** - Complete technical documentation
 3. **PHASE_2_IMPLEMENTATION_SUMMARY.md** - Architecture overview
-4. **Code comments** - Inline documentation in all files
+4. **IAM_CONFIGURATION.md** - Detailed IAM User setup and credentials configuration
+5. **Code comments** - Inline documentation in all files
 
 ---
 
 ## ✅ Validation Checklist
 
 - [x] All 18 Swift files created and tested for syntax
-- [x] Podfile with all necessary dependencies
+- [x] Podfile with all necessary dependencies (Cognito removed)
 - [x] Domain layer: Entities, Repositories, Use Cases
 - [x] Data layer: AWS client, Repository implementations
 - [x] Presentation layer: Views, ViewModel
 - [x] App lifecycle: AppDelegate, SceneDelegate
-- [x] Configuration: AWS credentials loading
+- [x] Configuration: IAM User credentials loading (no Cognito)
 - [x] Error handling: Comprehensive error enum
 - [x] Logging: Centralized logging utility
 - [x] UI: 4 SwiftUI views with modern design
 - [x] State management: Observable ViewModel
 - [x] Async/Await: Modern concurrency
-- [x] Documentation: 3 guides + inline comments
+- [x] Documentation: 4 guides + inline comments
 - [x] .gitignore: Pods, build artifacts, secrets
+- [x] IAM User credentials setup documented
+- [x] StartOutboundVoiceContact ready with IAM permissions
 - [x] Ready for: Phase 3 (Android)
 
 ---
