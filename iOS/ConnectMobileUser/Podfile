@@ -1,4 +1,4 @@
-project 'ConnectMobileUser/ConnectMobileUser.xcodeproj'
+project 'ConnectMobileUser.xcodeproj'
 platform :ios, '14.0'
 
 target 'ConnectMobileUser' do
