@@ -75,4 +75,24 @@ struct AWSConfiguration {
         }
         #endif
     }
+    
+    /// Check if configuration is complete and valid
+    func isValid() -> Bool {
+        return !accessKeyId.isEmpty &&
+               !secretAccessKey.isEmpty &&
+               !instanceId.isEmpty &&
+               !queueId.isEmpty &&
+               !contactFlowId.isEmpty
+    }
+    
+    /// Get validation error message
+    func validationErrors() -> [String] {
+        var errors: [String] = []
+        if accessKeyId.isEmpty { errors.append("AWS_ACCESS_KEY_ID not set") }
+        if secretAccessKey.isEmpty { errors.append("AWS_SECRET_ACCESS_KEY not set") }
+        if instanceId.isEmpty { errors.append("CONNECT_INSTANCE_ID not set") }
+        if queueId.isEmpty { errors.append("CONNECT_QUEUE_ID not set") }
+        if contactFlowId.isEmpty { errors.append("CONNECT_CONTACT_FLOW_ID not set") }
+        return errors
+    }
 }

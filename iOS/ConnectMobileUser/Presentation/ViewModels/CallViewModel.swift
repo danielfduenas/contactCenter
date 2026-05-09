@@ -6,7 +6,11 @@ import Combine
 class CallViewModel: ObservableObject {
     // MARK: - Published Properties
     
-    @Published var callState: CallState = .idle
+    @Published var callState: CallState = .idle {
+        didSet {
+            logger.info("📱 CallState changed to: \(callState)")
+        }
+    }
     @Published var errorMessage: String? = nil
     @Published var callDuration: TimeInterval = 0
     @Published var currentCall: Call? = nil
@@ -21,7 +25,6 @@ class CallViewModel: ObservableObject {
     private let logger = Logger.shared
     
     private var durationTimer: Timer? = nil
-    private var statusStream: AsyncStream<CallState>? = nil
     private var statusTask: Task<Void, Never>? = nil
     
     // Configuration
@@ -47,37 +50,44 @@ class CallViewModel: ObservableObject {
         self.monitorCallStatusUseCase = monitorCallStatusUseCase
         self.endCallUseCase = endCallUseCase
         self.permissionRepository = permissionRepository
+        
+        logger.info("🏗️ CallViewModel initialized with InstanceID: \(instanceId)")
     }
     
     // MARK: - Public Methods
     
     func initiateCall(callerName: String? = nil) async {
+        logger.info("🔘 Initiate Call button pressed")
         callState = .requestingPermission
-        logger.info("Starting call initiation process")
         
         do {
             // Step 1: Check and request permissions
+            logger.info("🎤 Checking microphone permissions...")
             let hasPermission = permissionRepository.isMicrophonePermissionGranted()
             if !hasPermission {
+                logger.info("⚠️ Permission not granted, requesting...")
                 let granted = try await permissionRepository.requestMicrophonePermission()
                 if !granted {
                     callState = .error(.microphonePermissionDenied)
                     errorMessage = CallError.microphonePermissionDenied.displayText
                     showErrorAlert = true
-                    logger.error("Microphone permission denied")
+                    logger.error("❌ Microphone permission denied by user")
                     return
                 }
             }
+            logger.info("✅ Microphone permissions secured")
             
             // Step 2: Initiate the call
             callState = .connecting
+            logger.info("📞 Executing initiateCallUseCase...")
+            
             let contactId = try await initiateCallUseCase.execute(
                 instanceId: instanceId,
                 queueId: queueId,
                 callerName: callerName
             )
             
-            logger.info("Call initiated successfully. Contact ID: \(contactId)")
+            logger.info("🚀 Call initiated successfully. Contact ID: \(contactId)")
             
             // Step 3: Create call object and start monitoring
             currentCall = Call(contactId: contactId, status: .connecting)
@@ -87,22 +97,23 @@ class CallViewModel: ObservableObject {
             callState = .error(error)
             errorMessage = error.displayText
             showErrorAlert = true
-            logger.error("Call initiation failed: \(error.displayText)")
+            logger.error("❌ Call initiation failed (CallError): \(error.displayText)")
         } catch {
             let callError = CallError.unknown(error.localizedDescription)
             callState = .error(callError)
             errorMessage = callError.displayText
             showErrorAlert = true
-            logger.error("Unexpected error during call initiation: \(error)")
+            logger.error("❌ Unexpected error during call initiation: \(error)")
         }
     }
     
     func endCall() async {
         guard let contactId = currentCall?.contactId else {
-            logger.warning("No active call to end")
+            logger.warning("⚠️ No active call to end")
             return
         }
         
+        logger.info("🔌 Ending call for Contact ID: \(contactId)")
         callState = .ending
         
         do {
@@ -110,29 +121,29 @@ class CallViewModel: ObservableObject {
             if success {
                 callState = .ended(reason: .userInitiated)
                 stopDurationTimer()
-                logger.info("Call ended successfully")
+                logger.info("✅ Call ended successfully by user")
             } else {
-                logger.warning("Call end returned false")
+                logger.warning("⚠️ Call end returned false from AWS")
             }
         } catch let error as CallError {
             callState = .error(error)
             errorMessage = error.displayText
             showErrorAlert = true
-            logger.error("Error ending call: \(error.displayText)")
+            logger.error("❌ Error ending call: \(error.displayText)")
         } catch {
             let callError = CallError.unknown(error.localizedDescription)
             callState = .error(callError)
             errorMessage = callError.displayText
             showErrorAlert = true
-            logger.error("Unexpected error ending call: \(error)")
+            logger.error("❌ Unexpected error ending call: \(error)")
         }
     }
     
     func dismissError() {
+        logger.info("🧹 Dismissing error alert")
         errorMessage = nil
         showErrorAlert = false
         
-        // Reset to idle if error occurred before connection
         if case .error = callState {
             callState = .idle
             currentCall = nil
@@ -142,19 +153,19 @@ class CallViewModel: ObservableObject {
     // MARK: - Private Methods
     
     private func monitorCallStatus(contactId: String) {
+        logger.info("📡 Starting call monitoring task...")
         statusTask = Task {
             for await status in monitorCallStatusUseCase.execute(contactId: contactId) {
-                // Update call state
+                logger.info("🔄 Monitor updated status: \(status)")
                 callState = status
                 
-                // Handle state transitions
                 switch status {
                 case .active:
                     startDurationTimer()
-                    logger.info("Call is now active")
+                    logger.info("⏱️ Call is now active, timer started")
                 case .ended, .error:
                     stopDurationTimer()
-                    logger.info("Call monitoring ended")
+                    logger.info("🛑 Call monitoring ended")
                 default:
                     break
                 }
@@ -165,10 +176,9 @@ class CallViewModel: ObservableObject {
     private func startDurationTimer() {
         stopDurationTimer()
         callDuration = 0
+        logger.info("🕒 Timer initialized")
         
-        // El closure del Timer es 'Sendable' en Swift 6
         durationTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-            // Usamos Task para saltar explícitamente al MainActor de forma segura
             Task { @MainActor [weak self] in
                 guard let self = self else { return }
                 self.callDuration += 1
@@ -177,14 +187,17 @@ class CallViewModel: ObservableObject {
     }
 
     private func stopDurationTimer() {
-        durationTimer?.invalidate()
-        durationTimer = nil
+        if durationTimer != nil {
+            logger.info("🕒 Timer invalidated")
+            durationTimer?.invalidate()
+            durationTimer = nil
+        }
     }
 
     deinit {
-        // Aquí invalidamos directamente el timer sin llamar al método aislado
+        // En deinit no podemos usar el logger si es un actor o singleton que ya se liberó
+        print("🗑️ CallViewModel deinitialized")
         durationTimer?.invalidate()
-        // Para el task, no necesitas llamar a un método del actor
         statusTask?.cancel()
     }
 }

@@ -6,38 +6,54 @@ import AWSCore
 class AWSConnectClient {
     static let shared = AWSConnectClient()
     
-    private let connectService: AWSConnect
+    private lazy var connectService: AWSConnect = {
+        print("📱 [AWSConnectClient] Initializing AWSConnect service...")
+        let service = AWSConnect.default()
+        print("✅ [AWSConnectClient] AWSConnect service initialized")
+        return service
+    }()
+    
     private let logger = Logger.shared
     
     init() {
-        // Initialize AWS SDK
+        print("📱 [AWSConnectClient] Init called")
+        // Initialize AWS SDK with proper logger
         AWSDDLog.sharedInstance.logLevel = .verbose
-        AWSDDLog.add(AWSDDTTYLogger.sharedInstance)
-        
-        self.connectService = AWSConnect.default()
+        if let ttyLogger = AWSDDTTYLogger.sharedInstance {
+            AWSDDLog.add(ttyLogger)
+        }
+        print("✅ [AWSConnectClient] Logger initialized")
     }
     
     /// Initiates an outbound voice contact
     /// - Parameters:
     ///   - instanceId: The Amazon Connect instance ID
+    ///   - contactFlowId: The ID of the contact flow to execute // NUEVO PARÁMETRO
     ///   - destinationPhoneNumber: The phone number or queue to route to
     ///   - sourcePhoneNumber: The caller's phone number
+    ///   - queueId: Optional queue ID // NUEVO PARÁMETRO (Opcional pero recomendado)
     ///   - attributes: Additional contact attributes
     /// - Returns: The contact ID
     func startOutboundVoiceContact(
         instanceId: String,
+        contactFlowId: String,
         destinationPhoneNumber: String,
         sourcePhoneNumber: String,
+        queueId: String? = nil,
         attributes: [String: String]
     ) async throws -> String {
+        print("📱 [AWSConnectClient] startOutboundVoiceContact called with instanceId: \(instanceId)")
         return try await withCheckedThrowingContinuation { continuation in
             let request = AWSConnectStartOutboundVoiceContactRequest()
             request?.instanceId = instanceId
+            request?.contactFlowId = contactFlowId // Asignación directa y segura
             request?.destinationPhoneNumber = destinationPhoneNumber
             request?.sourcePhoneNumber = sourcePhoneNumber
             request?.attributes = attributes
-            request?.queueId = attributes["QueueId"]
-            request?.contactFlowId = attributes["ContactFlowId"]
+            
+            if let qId = queueId {
+                request?.queueId = qId
+            }
             
             self.connectService.startOutboundVoiceContact(request!) { response, error in
                 if let error = error {

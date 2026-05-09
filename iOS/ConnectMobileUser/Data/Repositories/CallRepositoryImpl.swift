@@ -5,6 +5,7 @@ import Combine
 class CallRepositoryImpl: CallRepository {
     private let awsClient: AWSConnectClient
     private let logger = Logger.shared
+    private nonisolated let pollingTaskLock = NSLock()
     private var statusPollingTasks: [String: Task<Void, Never>] = [:]
     private var statusContinuations: [String: AsyncStream<CallState>.Continuation] = [:]
     
@@ -19,16 +20,23 @@ class CallRepositoryImpl: CallRepository {
         queueId: String,
         callerName: String?
     ) async throws -> String {
+        
+        // 1. Traemos tu configuración para sacar el ContactFlowId
+        let config = AWSConfiguration.shared
+        
         let attributes: [String: String] = [
             "QueueId": queueId,
             "Source": "MobileApp",
             "CallerName": callerName ?? "Mobile User"
         ]
         
+        // 2. Llamamos al cliente con la nueva estructura completa
         let contactId = try await awsClient.startOutboundVoiceContact(
             instanceId: instanceId,
-            destinationPhoneNumber: queueId,
-            sourcePhoneNumber: "+1",
+            contactFlowId: config.contactFlowId,
+            destinationPhoneNumber: "+14128300856",
+            sourcePhoneNumber: "+12816525076",
+            queueId: queueId, // Le pasamos el parámetro opcional que agregamos
             attributes: attributes
         )
         
@@ -41,7 +49,6 @@ class CallRepositoryImpl: CallRepository {
             self.statusContinuations[contactId] = continuation
             
             let task = Task {
-                var isConnected = false
                 var pollInterval: TimeInterval = 1.0
                 let maxInterval: TimeInterval = 5.0
                 
@@ -57,7 +64,6 @@ class CallRepositoryImpl: CallRepository {
                         // Check if call is connected or ended
                         switch status {
                         case .active:
-                            isConnected = true
                             pollInterval = 2.0
                         case .ended:
                             continuation.finish()
@@ -84,20 +90,29 @@ class CallRepositoryImpl: CallRepository {
                 continuation.finish()
             }
             
-            self.statusPollingTasks[contactId] = task
+            self.pollingTaskLock.withLock {
+                self.statusPollingTasks[contactId] = task
+            }
             
-            continuation.onTermination = { @Sendable _ in
-                self.statusPollingTasks[contactId]?.cancel()
-                self.statusPollingTasks.removeValue(forKey: contactId)
-                self.statusContinuations.removeValue(forKey: contactId)
+            continuation.onTermination = { @Sendable [weak self] _ in
+                guard let self = self else { return }
+                self.pollingTaskLock.withLock {
+                    self.statusPollingTasks[contactId]?.cancel()
+                    self.statusPollingTasks.removeValue(forKey: contactId)
+                }
+                DispatchQueue.main.async {
+                    self.statusContinuations.removeValue(forKey: contactId)
+                }
             }
         }
     }
     
     func endCall(contactId: String) async throws -> Bool {
         // Cancel the polling task
-        statusPollingTasks[contactId]?.cancel()
-        statusPollingTasks.removeValue(forKey: contactId)
+        pollingTaskLock.withLock {
+            statusPollingTasks[contactId]?.cancel()
+            statusPollingTasks.removeValue(forKey: contactId)
+        }
         
         // Finish the stream
         statusContinuations[contactId]?.finish()
