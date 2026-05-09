@@ -1,388 +1,111 @@
 # Amazon Connect Mobile Integration - Technical Challenge
 
-A comprehensive mobile application that integrates iOS and Android clients with AWS Amazon Connect for real-time voice communication between end-users and support agents.
+Una solución integral de contact center móvil que integra clientes iOS y Android con AWS Amazon Connect para comunicación de voz en tiempo real.
 
-## 📋 Project Overview
+## 📋 Descripción del Proyecto
 
-This project implements a complete mobile-first contact center solution using:
-- **iOS App (Swift)**: Customer-facing application to request support calls
-- **Android App (Kotlin)**: Agent dashboard to receive and manage calls
-- **AWS Infrastructure**: Amazon Connect instance with proper routing and queuing
-- **Real-time Communication**: WebRTC/SIP integration for voice calls
+Este proyecto implementa un sistema de contact center mobile-first utilizando un enfoque híbrido:
+- **App iOS (Swift)**: Aplicación para el cliente final que solicita soporte técnico de forma nativa.
+- **App Android (Kotlin)**: Panel del agente para gestionar estados y disponibilidad.
+- **Infraestructura AWS**: Instancia de Amazon Connect con colas y flujos de contacto.
+- **Ruteo de Audio (PSTN)**: Se utiliza la red celular tradicional (configuración *Desk phone*) para el agente, garantizando 100% de fiabilidad en el audio sin la complejidad técnica de WebRTC en dispositivos móviles.
 
-## 🎯 Core Features
+*(Nota: Para este ejercicio técnico, se omitió el uso de AWS Cognito y Lambdas, utilizando credenciales de usuario IAM inyectadas de forma segura en tiempo de compilación).*
 
-### iOS App
-- ✅ Simple "Call Support" button interface
-- ✅ Real-time call status display (Connecting → Connected → Ended)
-- ✅ Automatic microphone permission handling
-- ✅ AWS SigV4 request signing
-- ✅ Error handling and retry logic
-- ✅ Call duration timer
-- ✅ Clean Architecture pattern
+## 🎯 Características Principales
 
-### Android App (Agent)
-- ✅ Agent login screen with secure credentials
-- ✅ Incoming call notifications (FCM + visual/audio)
-- ✅ CCP (Contact Control Panel) integration
-- ✅ Call control buttons (Accept, Reject, Mute, Hold, End)
-- ✅ Real-time call status updates
-- ✅ MVVM architecture with proper separation of concerns
-- ✅ Secure credential storage (EncryptedSharedPreferences)
+### App iOS (Cliente)
+- ✅ Interfaz simple con botón "Llamar a Soporte".
+- ✅ Estados de llamada en tiempo real (Conectando → Conectado → Finalizada).
+- ✅ Firma de peticiones AWS SigV4.
+- ✅ Patrón de arquitectura Clean Architecture.
 
-### AWS Infrastructure
-- ✅ Amazon Connect instance setup
-- ✅ Contact Flow configuration
-- ✅ Queue and Routing Profile management
-- ✅ IAM roles and policies
-- ✅ Agent user management
+### App Android (Agente)
+- ✅ Gestión de estado del agente mediante **AWS Java SDK v2**.
+- ✅ **Ruteo PSTN:** Sin necesidad de WebRTC; las llamadas se reciben directamente en la aplicación de teléfono nativa del celular.
+- ✅ Sincronización en tiempo real (API `PutUserStatus` para cambiar entre Disponible/Offline).
+- ✅ Arquitectura MVVM con Inyección de Dependencias manual (Factories).
+- ✅ Configuración segura mediante `local.properties` y `BuildConfig`.
 
-## 📱 Architecture
+## 📱 Arquitectura
 
-### System Diagram
-```
-[iOS User App] 
-        ↓ (HTTP/REST)
-    AWS SDK + SigV4 Signing
-        ↓
-[Amazon Connect Instance]
-  ├─ Contact Flow
-  ├─ Queue Management
-  └─ Routing Logic
-        ↓ (WebRTC/SIP)
-[Android Agent App]
-  ├─ CCP WebView
-  ├─ Call Controls
-  └─ FCM Notifications
+### Diagrama del Sistema
+```text
+[App Usuario iOS] 
+        ↓ (HTTP/REST via AWS SDK)
+[Instancia Amazon Connect]
+  ├─ Flujo de Contacto (Contact Flow)
+  ├─ Gestión de Colas
+  └─ Lógica de Ruteo (Transferir al Agente)
+        ↓ (Red Celular / PSTN)
+[App Agente Android]
+  ├─ UI: Dashboard en Jetpack Compose
+  ├─ Lógica: AWS Java SDK v2 (Gestión de Estado)
+  └─ Audio: App de Teléfono Nativa (Desvío Desk phone)
 ```
 
-### Design Patterns
+## 🚀 Inicio Rápido
 
-**iOS**: Clean Architecture
-- Domain Layer (Entities, UseCases, Repositories)
-- Presentation Layer (Views, ViewModels)
-- Data Layer (Network, Local Storage)
+### Requisitos Previos
+- **iOS**: Xcode 14+, Swift 5.7+
+- **Android**: Android Studio, Kotlin 1.8+, Gradle 8.0+
+- **AWS**: Instancia de Amazon Connect activa y usuario Agente configurado como **Desk phone**.
 
-**Android**: MVVM + Repository Pattern
-- UI Layer (Compose, Navigation)
-- ViewModel Layer (State Management)
-- Domain Layer (UseCases, Entities)
-- Data Layer (Repositories, DataSources)
-
-## 🚀 Quick Start
-
-### Prerequisites
-- **iOS Development**
-  - Xcode 14+
-  - Swift 5.7+
-  - iOS 14+
-  - CocoaPods
-
-- **Android Development**
-  - Android Studio Flamingo+
-  - Kotlin 1.8+
-  - Android 7.0+ (API 24)
-  - Gradle 8.0+
-
-- **AWS Setup**
-  - AWS Account with appropriate permissions
-  - AWS CLI configured
-  - Amazon Connect service access
-
-### Installation Steps
-
-#### 1. AWS Setup (Prerequisites)
-```bash
-# Follow the complete guide in AWS/Documentation/SETUP.md
-# Key steps:
-# 1. Create Amazon Connect instance
-# 2. Configure Contact Flow
-# 3. Set up Queues and Routing Profiles
-# 4. Create IAM roles
-# 5. Register agent user
-```
-
-See [AWS Setup Guide](AWS/Documentation/SETUP.md) for detailed instructions.
-
-#### 2. iOS App Setup
-```bash
-cd iOS/AmazonConnectClient
-
-# Install dependencies
-pod install
-
-# Open workspace
-open AmazonConnectClient.xcworkspace
-
-# Configure AWS credentials in Constants.swift
-# Build and run on simulator or device
-```
-
-#### 3. Android App Setup
-```bash
-cd Android
-
-# Open in Android Studio
-# Configure Firebase project (for FCM)
-# Build and run on emulator or device
-
-# Key configuration files:
-# - local.properties
-# - app/build.gradle.kts
-# - google-services.json (for Firebase)
-```
-
-## 📂 Project Structure
-
-```
-pruebaAmazonConnect/
-├── AWS/
-│   ├── CloudFormation/
-│   │   └── connect-setup.yaml          # IaC template
-│   ├── Lambda/
-│   │   └── presigner-function.py       # Token presigning
-│   └── Documentation/
-│       └── SETUP.md                    # AWS setup guide
-│
-├── iOS/
-│   ├── AmazonConnectClient/
-│   │   ├── App/
-│   │   ├── Presentation/
-│   │   │   ├── Views/
-│   │   │   └── ViewModels/
-│   │   ├── Domain/
-│   │   │   ├── Entities/
-│   │   │   ├── UseCases/
-│   │   │   └── Repositories/
-│   │   ├── Data/
-│   │   │   ├── Repositories/
-│   │   │   ├── DataSources/
-│   │   │   ├── Networking/
-│   │   │   └── Models/
-│   │   ├── Shared/
-│   │   └── Tests/
-│   └── README.md
-│
-├── Android/
-│   ├── app/
-│   │   ├── src/main/java/com/example/connectagent/
-│   │   │   ├── ui/
-│   │   │   │   ├── screens/
-│   │   │   │   ├── components/
-│   │   │   │   └── navigation/
-│   │   │   ├── viewmodel/
-│   │   │   ├── domain/
-│   │   │   ├── data/
-│   │   │   └── di/
-│   │   ├── src/test/
-│   │   └── src/androidTest/
-│   ├── build.gradle.kts
-│   └── README.md
-│
-├── ARCHITECTURE.md                      # Detailed architecture docs
-├── IMPLEMENTATION_PLAN.md               # Step-by-step plan
-└── README.md                            # This file
-```
-
-## 🔑 Configuration
-
-### iOS Configuration
-
-Create `Constants.swift` in `Shared/`:
-
-```swift
-struct AWSConstants {
-    static let accessKeyID = "YOUR_ACCESS_KEY"
-    static let secretAccessKey = "YOUR_SECRET_KEY"
-    static let region = "us-east-1"
-    static let instanceID = "YOUR_INSTANCE_ID"
-    static let contactFlowID = "YOUR_CONTACT_FLOW_ID"
-}
-```
-
-### Android Configuration
-
-Edit `local.properties`:
+### Configuración de Android (Agente)
+1. Clona el repositorio y abre la carpeta `Android` en Android Studio.
+2. Crea un archivo `local.properties` en la raíz del proyecto Android y añade tus credenciales y UUIDs de AWS:
 
 ```properties
-aws.accessKeyId=YOUR_ACCESS_KEY
-aws.secretAccessKey=YOUR_SECRET_KEY
-aws.region=us-east-1
-connect.instanceId=YOUR_INSTANCE_ID
-firebase.projectId=YOUR_FIREBASE_PROJECT
+AWS_ACCESS_KEY_ID=TU_ACCESS_KEY
+AWS_SECRET_ACCESS_KEY=TU_SECRET_KEY
+AWS_REGION=us-west-2
+CONNECT_INSTANCE_ID=ID_DE_TU_INSTANCIA
+AGENT_USER_ID=UUID_DEL_USUARIO_EN_CONNECT
+AGENT_USERNAME=TU_NOMBRE_DE_USUARIO
+AGENT_PASSWORD=TU_CONTRASEÑA
+AVAILABLE_STATUS_ID=UUID_DEL_ESTADO_AVAILABLE
+OFFLINE_STATUS_ID=UUID_DEL_ESTADO_OFFLINE
 ```
 
-Configure `google-services.json` from Firebase Console.
+3. Sincroniza el proyecto con Gradle.
+4. Ejecuta la app en tu dispositivo físico.
 
-## 🔐 Security Considerations
+## 🔐 Seguridad y Configuración
 
-### Credentials Management
-- **iOS**: Stored in Keychain with App Groups protection
-- **Android**: Encrypted via EncryptedSharedPreferences
-- **AWS**: SigV4 signing for all requests
-- **Never**: Commit credentials to Git
+- **Secretos Protegidos**: Todas las llaves y UUIDs se extraen de `local.properties` hacia `BuildConfig`, evitando subirlos al control de versiones.
+- **SDK Ligero**: Se utiliza `software.amazon.awssdk:connect` (Java v2) optimizado para Android mediante el uso de `UrlConnectionHttpClient`, evitando dependencias pesadas como Netty o Apache que causan crashes en móviles.
+- **Política IAM**: El usuario requiere permisos específicos para `connect:PutUserStatus` y acciones de ruteo.
 
-### Permissions
-- **iOS**: Microphone permission (AVAudioSession)
-- **Android**: RECORD_AUDIO, MODIFY_PHONE_STATE
-- Both apps request at runtime with user rationale
+## 📊 Referencias de API
 
-### Data Privacy
-- No PII stored locally without encryption
-- Secure TLS 1.2+ for all network requests
-- Call metadata logged to CloudWatch (configurable)
+### Android - AWS Connect Java SDK v2 (Cambio de Estado)
+La app actualiza el estado del agente directamente con el SDK nativo al entrar al Dashboard:
 
-## 🧪 Testing
-
-### Running Tests
-
-#### iOS
-```bash
-cd iOS/AmazonConnectClient
-xcodebuild test -scheme AmazonConnectClient
-```
-
-#### Android
-```bash
-cd Android
-./gradlew test              # Unit tests
-./gradlew connectedAndroidTest  # Instrumentation tests
-```
-
-### Test Coverage
-- iOS: 70%+ code coverage
-- Android: 70%+ code coverage
-- E2E: Complete call flow validation
-
-### Manual Testing Checklist
-
-- [ ] iOS: Request microphone permission
-- [ ] iOS: Initiate call (watch for state transitions)
-- [ ] iOS: Display proper error messages
-- [ ] Android: Login with valid credentials
-- [ ] Android: Receive incoming call notification
-- [ ] Android: Accept/Reject call
-- [ ] Android: Mute/Hold/End controls work
-- [ ] End-to-end: Call audio established
-- [ ] End-to-end: Call duration timer accurate
-- [ ] Network: Retry on connection loss
-
-## 📊 API References
-
-### iOS - AWS Connect SDK
-```swift
-// Start outbound voice contact
-let request = StartOutboundVoiceContactRequest(
-    destinationPhoneNumber: "+1234567890",
-    contactFlowId: flowID,
-    instanceId: instanceID
-)
-```
-
-### Android - CCP WebView
 ```kotlin
-// JavaScript bridge to CCP
-val javascript = """
-    amazon_connect.contact(contactId).setMuted(true);
-"""
+val request = PutUserStatusRequest.builder()
+    .instanceId(BuildConfig.CONNECT_INSTANCE_ID)
+    .userId(BuildConfig.AGENT_USER_ID)
+    .agentStatusId(BuildConfig.AVAILABLE_STATUS_ID)
+    .build()
+
+connectClient.putUserStatus(request)
 ```
 
-## 🐛 Troubleshooting
+## 🐛 Solución de Problemas (Troubleshooting)
 
-### iOS Issues
-| Issue | Solution |
+| Problema | Causa / Solución |
 |-------|----------|
-| AWS SDK not found | Run `pod install` and open `.xcworkspace` |
-| Microphone permission denied | Go to Settings → Privacy → Microphone |
-| SigV4 signing fails | Verify AWS credentials in Constants.swift |
-| Call not routing | Check Contact Flow and Queue configuration |
+| **La llamada se cuelga inmediatamente** | **Causa:** AWS bloquea llamadas internacionales por defecto.<br>**Solución:** Usa un número virtual de EE.UU. (+1) en la configuración de Desk phone o pide el desbloqueo de Colombia (+57) en *Service Quotas* de AWS. |
+| **El celular no repica** | **Causa:** El agente está configurado como "Softphone" en la consola de AWS.<br>**Solución:** Cambia el tipo de teléfono a "Desk phone" en la gestión de usuarios de Connect. |
+| **Error de compilación `AGENT_PASSWORD`** | **Causa:** Espacios accidentales en el archivo `build.gradle`.<br>**Solución:** Asegúrate de que `buildConfigField` use el formato `\"${properties.getProperty(...)}\"` sin espacios adicionales. |
+| **Error `Unresolved reference` en SDK** | **Causa:** Uso de SDKs antiguos o falta de sincronización.<br>**Solución:** Asegúrate de usar la versión `2.25.27` de `software.amazon.awssdk` y haber sincronizado Gradle. |
 
-### Android Issues
-| Issue | Solution |
-|-------|----------|
-| Firebase messaging not working | Verify google-services.json is added |
-| WebView crashes | Check CCP URL and agent credentials |
-| Login fails | Verify agent user exists in Connect instance |
-| No incoming notifications | Enable FCM and check Firebase project config |
+## 📚 Documentación Adicional
 
-### AWS Issues
-| Issue | Solution |
-|-------|----------|
-| Contact Flow not working | Test from Connect console first |
-| Queue empty | Verify routing profile assigned to agent |
-| Agent not receiving calls | Check agent status in CCP and queue assignment |
-
-## 📚 Documentation Files
-
-- [ARCHITECTURE.md](ARCHITECTURE.md) - Detailed system architecture
-- [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) - Phase-by-phase implementation guide
-- [AWS/Documentation/SETUP.md](AWS/Documentation/SETUP.md) - AWS setup instructions
-- [iOS/README.md](iOS/README.md) - iOS-specific documentation
-- [Android/README.md](Android/README.md) - Android-specific documentation
-
-## 🎁 Bonus Features
-
-### Implemented
-- ✅ Push Notifications for Android agents
-- ✅ Customer profile display in agent app
-- ✅ Call history with local storage
-- ✅ Unit tests (70%+ coverage)
-
-### Potential Enhancements
-- [ ] Video call support (Screen sharing)
-- [ ] Call recording and transcription
-- [ ] AI-powered call summaries
-- [ ] Multi-language support
-- [ ] Voice commands for agents
-- [ ] Analytics dashboard
-- [ ] CRM integration
-
-## 📝 License
-
-This project is provided as-is for technical evaluation purposes.
-
-## 👥 Contributing
-
-1. Create a feature branch: `git checkout -b feature/my-feature`
-2. Commit changes: `git commit -m 'Add my feature'`
-3. Push to branch: `git push origin feature/my-feature`
-4. Submit pull request
-
-## 📞 Support
-
-For questions or issues:
-1. Check [Troubleshooting](#troubleshooting) section
-2. Review architecture docs in [ARCHITECTURE.md](ARCHITECTURE.md)
-3. Check AWS Connect documentation
-4. Open an issue in the repository
-
-## 🗓️ Estimated Development Timeline
-
-- **Phase 1 (AWS Infrastructure)**: 3-4 days
-- **Phase 2 (iOS App)**: 3-4 days
-- **Phase 3 (Android App)**: 3-4 days
-- **Phase 4 (Error Handling & Permissions)**: 2 days
-- **Phase 5 (Testing & Validation)**: 2-3 days
-- **Phase 6 (Documentation)**: 1-2 days
-- **Phase 7 (Bonus Features)**: 2 days (optional)
-
-**Total**: 16-23 days (or 3-5 weeks)
-
-## ✅ Deliverables Checklist
-
-- [x] Architecture documentation
-- [x] Implementation plan
-- [x] Project structure
-- [ ] iOS app with clean architecture
-- [ ] Android app with MVVM
-- [ ] AWS infrastructure setup
-- [ ] Unit and integration tests
-- [ ] E2E testing validation
-- [ ] Complete documentation
-- [ ] Demo video (optional)
+- [ARCHITECTURE.md](ARCHITECTURE.md) - Arquitectura detallada del sistema.
+- [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) - Guía de implementación fase por fase.
 
 ---
-
-**Last Updated**: May 2, 2026  
-**Version**: 1.0.0  
-**Status**: Planning Phase Complete
+**Última actualización**: 9 de Mayo de 2026  
+**Versión**: 1.1.0  
+**Estado**: Integración E2E Android & AWS Completada
