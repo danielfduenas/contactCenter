@@ -286,3 +286,6 @@ out/
 *.tar.gz
 *.rar
 .eslint-plugin-prettier.log
+
+# Documentation
+documents
