@@ -54,12 +54,12 @@
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "AWS_ACCESS_KEY_ID"
-            value = "ASIAZV5RKC6BC64O5WJ7"
+            value = ""
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
             key = "AWS_SECRET_ACCESS_KEY"
-            value = "LeBFou7GXuMLuEu5YCHiD8wI1yTkt40m+s2k5Rtr"
+            value = ""
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
@@ -75,6 +75,11 @@
          <EnvironmentVariable
             key = "CONNECT_CONTACT_FLOW_ID"
             value = "380201d0-9225-4bc8-b59a-b6261594dd0d"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "AWS_REGION"
+            value = "us-west-2"
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>
