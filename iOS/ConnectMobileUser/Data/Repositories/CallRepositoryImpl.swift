@@ -34,8 +34,8 @@ class CallRepositoryImpl: CallRepository {
         let contactId = try await awsClient.startOutboundVoiceContact(
             instanceId: instanceId,
             contactFlowId: config.contactFlowId,
-            destinationPhoneNumber: "+14128300856",
-            sourcePhoneNumber: "+12816525076",
+            destinationPhoneNumber: "+12816525076",
+            sourcePhoneNumber: "+14128300856",
             queueId: queueId, // Le pasamos el parámetro opcional que agregamos
             attributes: attributes
         )

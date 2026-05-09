@@ -15,33 +15,60 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.connectcenter.agent.data.repositories.CallRepositoryImpl
 import com.connectcenter.agent.domain.entities.Call
 import com.connectcenter.agent.domain.entities.CallState
+// Importamos todos los casos de uso individuales
+import com.connectcenter.agent.domain.usecases.*
 import com.connectcenter.agent.viewmodel.CallViewModel
+
+/**
+ * Factory manual para construir el CallViewModel inyectando cada
+ * uno de los casos de uso que exige su constructor.
+ */
+val CallViewModelFactory = object : ViewModelProvider.Factory {
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        val repository = CallRepositoryImpl()
+
+        return CallViewModel(
+            acceptCallUseCase = AcceptCallUseCase(repository),
+            rejectCallUseCase = RejectCallUseCase(repository),
+            endCallUseCase = EndCallUseCase(repository),
+            toggleMuteUseCase = ToggleMuteUseCase(repository),
+            toggleHoldUseCase = ToggleHoldUseCase(repository)
+        ) as T
+    }
+}
 
 /**
  * Agent dashboard screen showing incoming calls
  */
 @Composable
 fun AgentDashboardScreen(
-    viewModel: CallViewModel = viewModel()
+    viewModel: CallViewModel = viewModel(factory = CallViewModelFactory)
 ) {
+    // Tus variables actuales
     val incomingCall by viewModel.incomingCall.collectAsState()
     val callState by viewModel.callState.collectAsState()
-    val callDuration by viewModel.callDuration.collectAsState()
-    val isMuted by viewModel.isMuted.collectAsState()
-    val isOnHold by viewModel.isOnHold.collectAsState()
-    val errorMessage by viewModel.errorMessage.collectAsState()
-    
+    // ... las demás variables
+
+    // AGREGAR ESTO: Se ejecuta una sola vez apenas la pantalla se muestra
+    LaunchedEffect(Unit) {
+        // Ejecutamos la llamada al repositorio en segundo plano (Corrutina)
+        kotlinx.coroutines.GlobalScope.launch(kotlinx.coroutines.Dispatchers.IO) {
+            val repository = com.connectcenter.agent.data.repositories.AgentRepositoryImpl()
+            repository.setAgentStatus("AVAILABLE")
+        }
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(
-                brush = androidx.compose.foundation.background(
-                    Color(0xFFF5F5F5)
-                )
-            )
+            .background(Color(0xFFF5F5F5))
     ) {
         Column(
             modifier = Modifier
@@ -55,7 +82,7 @@ fun AgentDashboardScreen(
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(bottom = 24.dp)
             )
-            
+
             // Incoming call card or idle state
             if (incomingCall != null) {
                 IncomingCallCard(
@@ -65,11 +92,11 @@ fun AgentDashboardScreen(
                     onAccept = { viewModel.acceptCall(incomingCall!!) },
                     onReject = { viewModel.rejectCall(incomingCall!!.contactId) }
                 )
-                
+
                 // Call controls (shown after accept)
                 if (callState != CallState.RINGING && callState != CallState.IDLE) {
                     Spacer(modifier = Modifier.height(24.dp))
-                    
+
                     CallControlsPanel(
                         isMuted = isMuted,
                         isOnHold = isOnHold,
@@ -82,7 +109,7 @@ fun AgentDashboardScreen(
                 // Idle state
                 IdleStateCard()
             }
-            
+
             // Error message
             if (!errorMessage.isNullOrEmpty()) {
                 Spacer(modifier = Modifier.height(16.dp))
@@ -91,9 +118,9 @@ fun AgentDashboardScreen(
                     onDismiss = { viewModel.clearError() }
                 )
             }
-            
+
             Spacer(modifier = Modifier.weight(1f))
-            
+
             // Status bar at bottom
             StatusBar(agentStatus = callState)
         }
@@ -114,7 +141,7 @@ fun IncomingCallCard(
         CallState.MUTED, CallState.ON_HOLD -> Color(0xFFFFD700) // Yellow
         else -> Color(0xFFCCCCCC) // Gray
     }
-    
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -139,23 +166,23 @@ fun IncomingCallCard(
                     modifier = Modifier.size(40.dp)
                 )
             }
-            
+
             Spacer(modifier = Modifier.height(16.dp))
-            
+
             // Caller name
             Text(
                 text = call.callerName,
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold
             )
-            
+
             // Caller ID
             Text(
                 text = call.callerId,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
-            
+
             // Call status and duration
             Spacer(modifier = Modifier.height(8.dp))
             Text(
@@ -168,7 +195,7 @@ fun IncomingCallCard(
                 },
                 style = MaterialTheme.typography.bodySmall
             )
-            
+
             // Action buttons
             AnimatedVisibility(visible = callState == CallState.RINGING) {
                 Row(
@@ -195,7 +222,7 @@ fun IncomingCallCard(
                         Spacer(modifier = Modifier.width(8.dp))
                         Text("Reject")
                     }
-                    
+
                     // Accept button
                     Button(
                         onClick = onAccept,
@@ -240,7 +267,7 @@ fun CallControlsPanel(
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(bottom = 12.dp)
             )
-            
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -253,7 +280,7 @@ fun CallControlsPanel(
                     onClick = onMuteToggle,
                     modifier = Modifier.weight(1f)
                 )
-                
+
                 ControlButton(
                     label = if (isOnHold) "Resume" else "Hold",
                     isActive = isOnHold,
@@ -261,7 +288,7 @@ fun CallControlsPanel(
                     modifier = Modifier.weight(1f)
                 )
             }
-            
+
             Button(
                 onClick = onEndCall,
                 modifier = Modifier
@@ -324,14 +351,14 @@ fun IdleStateCard() {
                     .padding(bottom = 16.dp),
                 tint = MaterialTheme.colorScheme.primary
             )
-            
+
             Text(
                 text = "Ready to Receive Calls",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
-            
+
             Text(
                 text = "Waiting for incoming calls...",
                 style = MaterialTheme.typography.bodySmall,
@@ -364,7 +391,7 @@ fun ErrorMessageCard(
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.weight(1f)
             )
-            
+
             Button(
                 onClick = onDismiss,
                 modifier = Modifier.size(32.dp),
@@ -396,7 +423,7 @@ fun StatusBar(agentStatus: CallState) {
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.Bold
         )
-        
+
         val statusText = when (agentStatus) {
             CallState.IDLE -> "Available"
             CallState.RINGING -> "Incoming Call"
@@ -405,20 +432,20 @@ fun StatusBar(agentStatus: CallState) {
             CallState.ON_HOLD -> "On Hold"
             else -> agentStatus.name
         }
-        
+
         val statusColor = when (agentStatus) {
             CallState.IDLE -> Color(0xFF4CAF50)
             CallState.RINGING -> Color(0xFFFFA500)
             CallState.CONNECTED -> Color(0xFF4CAF50)
             else -> Color(0xFF9E9E9E)
         }
-        
+
         Box(
             modifier = Modifier
                 .size(12.dp)
                 .background(statusColor, RoundedCornerShape(50))
         )
-        
+
         Text(
             text = statusText,
             style = MaterialTheme.typography.labelSmall,

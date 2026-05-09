@@ -84,7 +84,7 @@ class CallNotificationService : FirebaseMessagingService() {
         
         // Build notification
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_incoming_call)
+            .setSmallIcon(android.R.drawable.ic_menu_call) // <-- Ícono genérico de llamada
             .setContentTitle("Incoming Call")
             .setContentText(callerName)
             .setContentIntent(mainPendingIntent)
@@ -93,12 +93,12 @@ class CallNotificationService : FirebaseMessagingService() {
             .setAutoCancel(true)
             .setFullScreenIntent(mainPendingIntent, true)
             .addAction(
-                R.drawable.ic_accept_call,
+                android.R.drawable.ic_menu_call, // <-- Ícono genérico para Aceptar
                 "Accept",
                 acceptPendingIntent
             )
             .addAction(
-                R.drawable.ic_reject_call,
+                android.R.drawable.ic_menu_close_clear_cancel, // <-- Ícono genérico para Rechazar
                 "Reject",
                 rejectPendingIntent
             )
